@@ -96,7 +96,7 @@ const handleGetAllProperties = async (req, res) => {
     queryObject.location = { $regex: location, $options: "i" };
   }
   if (type) {
-    queryObject.propertyType = { $regex: location, $options: "i" };
+    queryObject.propertyType = { $regex: type, $options: "i" };
   }
   if (bedroom) {
     queryObject.bedroom = { $eq: Number(bedroom) };
