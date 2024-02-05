@@ -111,7 +111,7 @@ const handleGetAllProperties = async (req, res) => {
 };
 const handleGetRecentProperties = async (req, res) => {
   try {
-    const recentProperties = await property.findOne().sort("-createdAt").limit(3)
+    const recentProperties = await property.find().sort("-createdAt").limit(3)
     res.status(200).json({success: true, properties: recentProperties})
   } catch (error) {
     console.log(error);
