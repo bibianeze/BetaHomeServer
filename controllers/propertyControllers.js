@@ -102,7 +102,7 @@ const handleGetAllProperties = async (req, res) => {
     queryObject.bedroom = { $eq: Number(bedroom) };
   }
   try {
-    const properties = await Property.find().sort("-createdAt");
+    const properties = await Property.find(queryObject).sort("-createdAt");
     res.status(200).json({ success: true, properties });
   } catch (error) {
     console.log(error);
