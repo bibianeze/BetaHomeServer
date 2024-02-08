@@ -1,6 +1,6 @@
 const property = require("../models/property");
 const Property = require("../models/property");
-const cloudinary = require("cloudinary").v2
+const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
 const handleAddProperty = async (req, res) => {
   const {
@@ -92,7 +92,7 @@ const handleAddProperty = async (req, res) => {
 const handleGetAllProperties = async (req, res) => {
   const { location, type, bedroom, sort } = req.query;
   const queryObject = {};
-  let result = Property.find(queryObject)
+  let result = Property.find(queryObject);
 
   if (location) {
     queryObject.location = { $regex: location, $options: "i" };
@@ -103,44 +103,40 @@ const handleGetAllProperties = async (req, res) => {
   if (bedroom) {
     queryObject.bedroom = { $eq: Number(bedroom) };
   }
-  if (sort){
-    result = result.sort(`${sort} -createdAt`)
-  }else{
-  result.sort("-createdAt")
+  if (sort) {
+    result = result.sort(`${sort} -createdAt`);
+  } else {
+    result.sort("-createdAt");
   }
- 
- 
+
   try {
-     result = result.find(queryObject);
-     const properties = await result;
+    result = result.find(queryObject);
+    const properties = await result;
     res.status(200).json({ success: true, properties });
   } catch (error) {
-    
     console.log(error);
     res.json(error);
   }
 };
 const handleGetRecentProperties = async (req, res) => {
   try {
-    const recentProperties = await property.find().sort("-createdAt").limit(3)
-    res.status(200).json({success: true, properties: recentProperties})
+    const recentProperties = await property.find().sort("-createdAt").limit(3);
+    res.status(200).json({ success: true, properties: recentProperties });
   } catch (error) {
     console.log(error);
     res.status(404).json(error);
-    
   }
 };
 const handleGetASingleProperty = async (req, res) => {
-  const {propertyId} = req.params
+  const { propertyId } = req.params;
   try {
-    const property = await Property.findById({_id: propertyId})
-    const propertyType = property.propertyType
-    const similarProperties = await Property.find({propertyType}).limit(3)
-    res.status(200).json({success: true, property, similarProperties})
+    const property = await Property.findById({ _id: propertyId });
+    const propertyType = property.propertyType;
+    const similarProperties = await Property.find({ propertyType }).limit(3);
+    res.status(200).json({ success: true, property, similarProperties });
   } catch (error) {
     console.log(error);
     res.status(404).json(error);
-    
   }
 };
 
@@ -255,34 +251,34 @@ const handleEditProperties = async (req, res) => {
       .status(400)
       .json({ success: false, message: "Failed to update property", error });
   }
-}; 
+};
 
 const handleDeleteProperties = async (req, res) => {
-  const {propertyId} = req.params
+  const { propertyId } = req.params;
   try {
-    await Property.findByIdAndDelete({_id: propertyId})
-    res.status(200).json({ message: "Property Deleted", success: true})
+    await Property.findByIdAndDelete({ _id: propertyId });
+    res.status(200).json({ message: "Property Deleted", success: true });
   } catch (error) {
     console.log(error);
     res.status(404).json(error);
-    
   }
 };
-const handleFeaturedProperties = async (req, res)=>{
+const handleFeaturedProperties = async (req, res) => {
   try {
-    const housedProperties = await Property.find({propertyType: "house"}).sort('-createdAt').limit(3)
+    const housedProperties = await Property.find({ propertyType: "house" })
+      .sort("-createdAt")
+      .limit(3);
     const landedProperties = await Property.find({ propertyType: "land" })
       .sort("-createdAt")
       .limit(3);
 
-    const featuredProperties = [...housedProperties, ...landedProperties]
-    res.status(200).json({success: true, featuredProperties})
+    const featuredProperties = [...housedProperties, ...landedProperties];
+    res.status(200).json({ success: true, featuredProperties });
   } catch (error) {
     console.log(error);
-    res.json(error)
-    
+    res.json(error);
   }
-}
+};
 module.exports = {
   handleAddProperty,
   handleGetAllProperties,
@@ -290,5 +286,5 @@ module.exports = {
   handleEditProperties,
   handleDeleteProperties,
   handleGetRecentProperties,
-  handleFeaturedProperties
+  handleFeaturedProperties,
 };
